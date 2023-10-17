@@ -43,19 +43,19 @@ int _printf(const char *format, ...)
 			}
 			else if (*format == 's')
 			{
-				char *ptr = va_arg(argl, char*);
-				int _strlen = 0;
+				char *ptr = va_arg(argl, char *);
+				int strlen_ = 0;
 
-				while (ptr(_strlen) != '\0')
-					_strlen++;
+				while (ptr[strlen_] != '\0')
+					strlen_++;
 
-				write(1, ptr, _strlen);
-				nxter += _strlen;
+				write(1, ptr, strlen_);
+				nxter += strlen_;
 			}
 		}
 		format++;
 	}
 
 	va_end(argl);
-	return (argl);
+	return (nxter);
 }
