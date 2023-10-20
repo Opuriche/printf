@@ -12,7 +12,7 @@ int _printf(const char *format, ...)
 	va_list argl;
 
 	if (format == NULL)
-		return -1;
+		return (-1);
 
 	va_start(argl, format);
 
@@ -43,40 +43,79 @@ int _printf(const char *format, ...)
 			}
 			else if (*format == 's')
 			{
-				char *ptr = va_arg(argl, char *);
-				int strlen_ = 0;
+				if (format[1] == 'b')
+				{
+					unsigned int n = va_arg(argl, unsigned int);
+					char _str[32];
+					int len = 0;
+					int i;
 
-				while (ptr[strlen_] != '\0')
-					strlen_++;
+					for (i = 31; i >= 0; i--)
+					{
+						_str[len++] = (n & (1 << i)) ? '1' : '0';
+					}
+					write(1, _str, len);
+					nxter += len;
 
-				write(1, ptr, strlen_);
-				nxter += strlen_;
+					format++;
+				}
+				else
+				{
+					char *ptr = va_arg(argl, char *);
+					int strlen_ = 0;
+
+					while (ptr[strlen_] != '\0')
+						strlen_++;
+
+					write(1, ptr, strlen_);
+					nxter += strlen_;
+				}
 			}
 			else if (*format == 'd' || *format == 'i')
 			{
 				int num = va_arg(argl, int);
 				char num_str[12];
-
 				int len = sprintf(num_str, "%d", num);
+
 				write(1, num_str, len);
 				nxter += len;
 			}
-			else if (*format == 'b')
+			else if (*format == 'u')
 			{
-				unsigned int n = va_arg(argl, unsigned int);
-				char _str[32];
-				int len = 0;
-				int i;
+				unsigned int num = va_arg(argl, unsigned int);
+				char num_str[12];
 
-				for (i = 31; i >= 0; i--)
-				{
-					_str[len++] = (n & (1 << i)) ? '1' : '0';
-				}
-
-				write(1, _str, len);
+				int len = sprintf(num_str, "%u", num);
+				write(1, num_str, len);
 				nxter += len;
 			}
+			else if (*format == 'o')
+			{
+				unsigned int num = va_arg(argl, unsigned int);
+				char num_str[12];
 
+				int len = sprintf(num_str, "%o", num);
+				write(1, num_str, len);
+				nxter += len;
+			}
+			else if (*format == 'x')
+			{
+				unsigned int num = va_arg(argl, unsigned int);
+				char num_str[12];
+
+				int len = sprintf(num_str, "%x", num);
+				write(1, num_str, len);
+				nxter += len;
+			}
+			else if (*format == 'X')
+			{
+				unsigned int num = va_arg(argl, unsigned int);
+			char num_str[12];
+
+			int len = sprintf(num_str, "%X", num);
+			write(1, num_str, len);
+			nxter += len;
+			}
 		}
 		format++;
 	}
