@@ -61,6 +61,22 @@ int _printf(const char *format, ...)
 				write(1, num_str, len);
 				nxter += len;
 			}
+			else if (*format == 'b')
+			{
+				unsigned int n = va_arg(argl, unsigned int);
+				char _str[32];
+				int len = 0;
+				int i;
+
+				for (i = 31; i >= 0; i--)
+				{
+					_str[len++] = (n & (1 << i)) ? '1' : '0';
+				}
+
+				write(1, _str, len);
+				nxter += len;
+			}
+
 		}
 		format++;
 	}
